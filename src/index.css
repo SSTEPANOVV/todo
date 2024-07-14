@@ -33,3 +33,55 @@ body {
     max-width: 816px;
     margin: 0 auto;
 }
+
+
+/* ================================== HEADER ================================== */
+.header {
+    padding-top: 31px;
+    background-image: url("./assets/bg.png");
+    background-repeat: no-repeat;
+}
+
+.header__title {
+    font-size: 48px;
+    font-weight: 700;
+    line-height: 78px;
+    letter-spacing: 0.25em;
+    text-align: center;
+    margin-bottom: 43px;
+}
+
+.header__form {
+    margin-bottom: 21px
+}
+
+.header__form input {
+    display: block;
+    width: 100%;
+    height: 41px;
+    padding: 6px 29px;
+    background: var(--light-green);
+    margin-bottom: 26px;
+}
+
+.header__form input:last-child {
+    margin-bottom: 21px;
+}
+
+.header__form input::placeholder {
+    color: #3E3B3B;
+}
+
+.header_button {
+    display: block;
+    margin: 0 auto;
+    width: 290px;
+    height: 61px;
+    background: linear-gradient(90deg, #A8D2A5 0%, #ACD4E1 115.2%);
+    box-shadow: 0px 4px 4px #ACD4E1;
+    border-radius: 25px;
+    line-height: 29px;
+    font-size: 18px;
+    color: var(--dark-gray);
+    cursor: pointer;
+}
