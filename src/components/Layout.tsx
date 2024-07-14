@@ -4,10 +4,10 @@ import { Header } from "./Header"
 
 export const Layout = () => {
   return (
-    <>
+    <div className="wrapper">
         <Header />
         <Body />
         <Footer />
-    </>
+    </div>
   )
 }
