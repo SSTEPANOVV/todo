@@ -1,5 +1,12 @@
 export const Header = () => {
   return (
-    <div>Header</div>
+    <header className="header">
+        <h1 className="header__title">My Tasks</h1>
+        <form action="" className="header__form">
+            <input type="text" placeholder="Title"/>
+            <input type="text" placeholder="Description"/>
+            <button>Add</button>
+        </form>
+    </header>
   )
 }
