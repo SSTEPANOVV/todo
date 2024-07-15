@@ -20,6 +20,13 @@ export const Layout = () => {
     const [title, setTitle] = useState<string>("");
     const [description, setDescription] = useState<string>("");
 
+    useEffect(() => {
+        const storedTasks = localStorage.getItem("tasks");
+        if (storedTasks) {
+            setTasks(JSON.parse(storedTasks));
+        }
+    }, []);
+
     const addTask = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const newTask: Task = {
@@ -28,7 +35,7 @@ export const Layout = () => {
             description: description
         };
 
-        const storedTasks = localStorage.getItem("tasks");
+        const storedTasks: string | null = localStorage.getItem("tasks");
         const tasks: Task[] = storedTasks ? JSON.parse(storedTasks) : [];
         tasks.push(newTask);
         localStorage.setItem("tasks", JSON.stringify(tasks));
@@ -37,12 +44,15 @@ export const Layout = () => {
         setTasks(tasks);
     }
 
-    useEffect(() => {
-        const storedTasks = localStorage.getItem("tasks");
+    const deleteTask = (id: number) => {
+        const storedTasks: string | null = localStorage.getItem("tasks");
         if (storedTasks) {
-            setTasks(JSON.parse(storedTasks));
-        }
-    }, []);
+            const tasks: Task[] = JSON.parse(storedTasks);
+            const updatedTasks = tasks.filter(task => task.id !== id);
+            localStorage.setItem("tasks", JSON.stringify(updatedTasks));
+            setTasks(updatedTasks);
+        }  
+    }
 
     return (
         <div className="wrapper">
@@ -55,7 +65,7 @@ export const Layout = () => {
                 </form>
             </header>
             <main className="main">
-                {tasks && tasks.map((task: Task) => {
+                {tasks && tasks.map(task => {
                     return (
                         <div className="main_task" key={task.id}>
                             <div className="main_wrapper">
@@ -65,7 +75,7 @@ export const Layout = () => {
                                 </div>
                                 <div className="main_buttons">
                                     <img src={editImg} alt="" className="main_edit" />
-                                    <img src={deleteImgTask} alt="" className="main_delete" />
+                                    <img src={deleteImgTask} alt="" className="main_delete" onClick={() => deleteTask(task.id)} />
                                 </div>
                             </div>
                             <p className="main_description">{task.description}</p>
