@@ -51,7 +51,12 @@ export const Layout = () => {
             const updatedTasks = tasks.filter(task => task.id !== id);
             localStorage.setItem("tasks", JSON.stringify(updatedTasks));
             setTasks(updatedTasks);
-        }  
+        }
+    }
+
+    const deleteAllTasks = () => {
+        localStorage.setItem("tasks", JSON.stringify([]));
+        setTasks([]);
     }
 
     return (
@@ -88,7 +93,7 @@ export const Layout = () => {
                 <img src={shareImg} alt="" className="footer_button" />
                 <img src={formatImg} alt="" className="footer_button" />
                 <img src={sortImg} alt="" className="footer_button" />
-                <img src={deleteImg} alt="" className="footer_button" />
+                <img src={deleteImg} alt="" className="footer_button" onClick={deleteAllTasks} />
             </footer>
         </div>
     )
