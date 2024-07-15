@@ -137,3 +137,20 @@ body {
     font-size: 14px;
     line-height: 23px;
 }
+
+/* ================================== Footer ================================== */
+.footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 56px;
+    min-height: 71px;
+    background: var(--soft-blue);
+}
+
+.footer_button {
+    display: block;
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+}
