@@ -21,6 +21,8 @@ export const Layout = () => {
     const [description, setDescription] = useState<string>("");
     const [placeholderTitle, setPlaceholderTitle] = useState<string>("Title");
     const [classErrorTitle, setClassErrorTitle] = useState<string>("");
+    const [buttonText, setButtonText] = useState<string>("Add");
+    const [taskId, setTaskId] = useState<number>(0);
 
     useEffect(() => {
         const storedTasks = localStorage.getItem("tasks");
@@ -30,8 +32,20 @@ export const Layout = () => {
     }, []);
 
     const errorTitleHandler = () => {
-        setPlaceholderTitle("Title"); 
+        setPlaceholderTitle("Title");
         setClassErrorTitle("");
+    }
+
+    const editHandler = (id: number) => {
+        const storedTasks: string | null = localStorage.getItem("tasks");
+        if (storedTasks) {
+            const tasks: Task[] = JSON.parse(storedTasks);
+            const selectedTask = tasks.find(task => task.id === id);
+            setTaskId(id);
+            setTitle(selectedTask!.title);
+            setDescription(selectedTask!.description);
+            setButtonText("Edit");
+        }
     }
 
     const addTask = (e: React.FormEvent<HTMLFormElement>) => {
@@ -58,6 +72,35 @@ export const Layout = () => {
         setTasks(tasks);
     }
 
+    const editTask = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        if (!title) {
+            setPlaceholderTitle("Please add a title!");
+            setClassErrorTitle("error")
+            return;
+        }
+
+        const storedTasks: string | null = localStorage.getItem("tasks");
+        if (storedTasks) {
+            const tasks = JSON.parse(storedTasks);
+            const selectedTaskIndex = tasks.findIndex(task => task.id === taskId);
+
+            const updatedTask: Task = {
+                id: taskId,
+                title: title,
+                description: description
+            }
+
+            tasks[selectedTaskIndex] = {...tasks[selectedTaskIndex], ...updatedTask};
+            localStorage.setItem("tasks", JSON.stringify(tasks));
+            setTitle("");
+            setDescription("");
+            setButtonText("Add");
+            setTasks(tasks);
+        }
+    }
+
     const deleteTask = (id: number) => {
         const storedTasks: string | null = localStorage.getItem("tasks");
         if (storedTasks) {
@@ -65,6 +108,10 @@ export const Layout = () => {
             const updatedTasks: Task[] = tasks.filter(task => task.id !== id);
             localStorage.setItem("tasks", JSON.stringify(updatedTasks));
             setTasks(updatedTasks);
+
+            setTitle("");
+            setDescription("");
+            setButtonText("Add");
         }
     }
 
@@ -77,10 +124,10 @@ export const Layout = () => {
         <div className="wrapper">
             <header className="header">
                 <h1 className="header__title">My Tasks</h1>
-                <form onSubmit={addTask} className="header__form">
+                <form onSubmit={buttonText === "Add" ? addTask : editTask} className="header__form">
                     <input type="text" placeholder={placeholderTitle} value={title} className={`header__titleInput ${classErrorTitle}`} onClick={errorTitleHandler} onChange={(e) => setTitle(e.target.value)} />
                     <input type="text" placeholder="Description" value={description} onChange={(e) => setDescription(e.target.value)} />
-                    <button className="header_button">Add</button>
+                    <button className="header_button">{buttonText}</button>
                 </form>
             </header>
             <main className="main">
@@ -93,7 +140,7 @@ export const Layout = () => {
                                     <span className="main_text">{task.title}</span>
                                 </div>
                                 <div className="main_buttons">
-                                    <img src={editImg} alt="" className="main_edit" />
+                                    <img src={editImg} alt="" className="main_edit" onClick={() => editHandler(task.id)} />
                                     <img src={deleteImgTask} alt="" className="main_delete" onClick={() => deleteTask(task.id)} />
                                 </div>
                             </div>
