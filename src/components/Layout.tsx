@@ -19,6 +19,8 @@ export const Layout = () => {
     const [tasks, setTasks] = useState<Task[]>([]);
     const [title, setTitle] = useState<string>("");
     const [description, setDescription] = useState<string>("");
+    const [placeholderTitle, setPlaceholderTitle] = useState<string>("Title");
+    const [classErrorTitle, setClassErrorTitle] = useState<string>("");
 
     useEffect(() => {
         const storedTasks = localStorage.getItem("tasks");
@@ -27,8 +29,20 @@ export const Layout = () => {
         }
     }, []);
 
+    const errorTitleHandler = () => {
+        setPlaceholderTitle("Title"); 
+        setClassErrorTitle("");
+    }
+
     const addTask = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
+        if (!title) {
+            setPlaceholderTitle("Please add a title!");
+            setClassErrorTitle("error")
+            return;
+        }
+
         const newTask: Task = {
             id: Date.now(),
             title: title,
@@ -48,7 +62,7 @@ export const Layout = () => {
         const storedTasks: string | null = localStorage.getItem("tasks");
         if (storedTasks) {
             const tasks: Task[] = JSON.parse(storedTasks);
-            const updatedTasks = tasks.filter(task => task.id !== id);
+            const updatedTasks: Task[] = tasks.filter(task => task.id !== id);
             localStorage.setItem("tasks", JSON.stringify(updatedTasks));
             setTasks(updatedTasks);
         }
@@ -64,7 +78,7 @@ export const Layout = () => {
             <header className="header">
                 <h1 className="header__title">My Tasks</h1>
                 <form onSubmit={addTask} className="header__form">
-                    <input type="text" placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} />
+                    <input type="text" placeholder={placeholderTitle} value={title} className={`header__titleInput ${classErrorTitle}`} onClick={errorTitleHandler} onChange={(e) => setTitle(e.target.value)} />
                     <input type="text" placeholder="Description" value={description} onChange={(e) => setDescription(e.target.value)} />
                     <button className="header_button">Add</button>
                 </form>

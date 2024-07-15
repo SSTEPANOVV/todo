@@ -69,8 +69,13 @@ body {
 }
 
 .header__form input::placeholder {
-    color: #3E3B3B;
+    color: var(--dark-gray);
 }
+
+.header__form .header__titleInput.error::placeholder {
+    color: var(--red);
+}
+
 
 .header_button {
     display: block;
