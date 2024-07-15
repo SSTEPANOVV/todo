@@ -85,3 +85,55 @@ body {
     color: var(--dark-gray);
     cursor: pointer;
 }
+
+/* ================================== BODY ================================== */
+.main_task {
+    margin-bottom: 34px;
+}
+
+.main_wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 33px 6px 4px;
+    border-bottom: 2px solid var(--dark-gray);
+    margin-bottom: 5px;
+}
+
+.main_info {
+    display: flex;
+    align-items: center;
+    gap: 21px;
+}
+
+.main_info .main_check {
+    display: block;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}
+
+.main_buttons {
+    display: flex;
+    align-items: center;
+    gap: 23px;
+}
+
+.main_buttons .main_edit {
+    display: block;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}
+
+.main_buttons .main_delete {
+    display: block;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}
+
+.main_description {
+    font-size: 14px;
+    line-height: 23px;
+}
