@@ -147,6 +147,11 @@ body {
     line-height: 23px;
 }
 
+.completed {
+    text-decoration-line: line-through;
+    color: var(--light-gray);
+}
+
 /* ================================== Footer ================================== */
 .footer {
     display: flex;

@@ -8,11 +8,13 @@ import shareImg from "../assets/share-2.svg"
 import formatImg from "../assets/format-icon.svg"
 import sortImg from "../assets/sort-icon.svg"
 import deleteImg from "../assets/trash-1.svg"
+import completedImg from "../assets/check-circle-completed.svg"
 
 interface Task {
     id: number,
     title: string,
-    description: string
+    description: string,
+    completed: boolean
 }
 
 export const Layout = () => {
@@ -23,6 +25,7 @@ export const Layout = () => {
     const [classErrorTitle, setClassErrorTitle] = useState<string>("");
     const [buttonText, setButtonText] = useState<string>("Add");
     const [taskId, setTaskId] = useState<number>(0);
+    const [classCompletedTask, setClassCompletedTask] = useState<string>("");
 
     useEffect(() => {
         const storedTasks = localStorage.getItem("tasks");
@@ -60,7 +63,8 @@ export const Layout = () => {
         const newTask: Task = {
             id: Date.now(),
             title: title,
-            description: description
+            description: description,
+            completed: false
         };
 
         const storedTasks: string | null = localStorage.getItem("tasks");
@@ -83,16 +87,17 @@ export const Layout = () => {
 
         const storedTasks: string | null = localStorage.getItem("tasks");
         if (storedTasks) {
-            const tasks = JSON.parse(storedTasks);
+            const tasks: Task[] = JSON.parse(storedTasks);
             const selectedTaskIndex = tasks.findIndex(task => task.id === taskId);
 
             const updatedTask: Task = {
                 id: taskId,
                 title: title,
-                description: description
+                description: description,
+                completed: tasks[selectedTaskIndex].completed
             }
 
-            tasks[selectedTaskIndex] = {...tasks[selectedTaskIndex], ...updatedTask};
+            tasks[selectedTaskIndex] = { ...tasks[selectedTaskIndex], ...updatedTask };
             localStorage.setItem("tasks", JSON.stringify(tasks));
             setTitle("");
             setDescription("");
@@ -120,6 +125,26 @@ export const Layout = () => {
         setTasks([]);
     }
 
+    const completeTask = (id: number) => {
+        const storedTasks: string | null = localStorage.getItem("tasks");
+        if (storedTasks) {
+            const tasks: Task[] = JSON.parse(storedTasks);
+            const selectedTaskIndex = tasks.findIndex(task => task.id === id);
+
+            const updatedTask: Task = {
+                id: id,
+                title: tasks[selectedTaskIndex].title,
+                description: tasks[selectedTaskIndex].description,
+                completed: !tasks[selectedTaskIndex].completed
+            };
+            
+            updatedTask.completed ? setClassCompletedTask("completed") : setClassCompletedTask("");
+
+            tasks[selectedTaskIndex] = { ...tasks[selectedTaskIndex], ...updatedTask };
+            localStorage.setItem("tasks", JSON.stringify(tasks));
+            setTasks(tasks);
+        }
+    }
     return (
         <div className="wrapper">
             <header className="header">
@@ -136,15 +161,15 @@ export const Layout = () => {
                         <div className="main_task" key={task.id}>
                             <div className="main_wrapper">
                                 <div className="main_info">
-                                    <img src={checkImg} alt="" className="main_check" />
-                                    <span className="main_text">{task.title}</span>
+                                    <img src={task.completed ? completedImg : checkImg} alt="" className="main_check" onClick={() => completeTask(task.id)} />
+                                    <span className={`main_text ${classCompletedTask}`}>{task.title}</span>
                                 </div>
                                 <div className="main_buttons">
                                     <img src={editImg} alt="" className="main_edit" onClick={() => editHandler(task.id)} />
                                     <img src={deleteImgTask} alt="" className="main_delete" onClick={() => deleteTask(task.id)} />
                                 </div>
                             </div>
-                            <p className="main_description">{task.description}</p>
+                            <p className={`main_description ${classCompletedTask}`}>{task.description}</p>
                         </div>
                     )
                 })}
