@@ -64,7 +64,7 @@ body {
     margin-bottom: 26px;
 }
 
-.header__form input:last-child {
+.header__form input:last-of-type {
     margin-bottom: 21px;
 }
 
@@ -194,7 +194,7 @@ body {
     position: absolute;
     background-color: #f9f9f9;
     min-width: 200px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     z-index: 1;
     border-radius: 5px;
     overflow: hidden;
@@ -219,4 +219,79 @@ body {
 
 .footer_dropdown:hover .footer_dropbtn {
     background-color: #e7e7e7;
+}
+
+
+/* ================================== MEDIA QUERIES ================================== */
+@media screen and (max-width: 880px) {
+    body {
+        background-image: url(".//assets//bg.png");
+        background-repeat: no-repeat;
+    }
+
+    .wrapper {
+        max-width: 296px;
+    }
+
+    .header {
+        padding-top: 10px;
+        background-image: none;
+    }
+
+    .header__title {
+        font-size: 35px;
+        line-height: 65px;
+        margin-bottom: 20px;
+    }
+
+    .header__form {
+        margin-bottom: 53px
+    }
+
+
+    .header__form input {
+        padding: 6px 16px;
+    }
+
+    .main {
+        min-height: 52vh;
+    }
+
+    .main_task {
+        margin-bottom: 36px;
+    }
+
+    .main_wrapper {
+        padding: 0 0px 10px 0px;
+        margin-bottom: 5px;
+    }
+
+    .main_info {
+        gap: 28px;
+    }
+
+    .main_info .main_check {
+        width: 20px;
+        height: 20px;
+    }
+
+    .main_buttons .main_edit {
+        width: 20px;
+        height: 20px;
+    }
+
+    .main_buttons .main_delete {
+        width: 20px;
+        height: 20px;
+    }
+
+    .footer {
+        gap: 35px;
+        min-height: 100px;
+    }
+
+    .footer_button {
+        width: 24px;
+        height: 24px;
+    }
 }
