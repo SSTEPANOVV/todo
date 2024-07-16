@@ -1,4 +1,4 @@
-import { ReactEventHandler, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import checkImg from "../assets/check-circle.svg"
 import editImg from "../assets/edit-3.svg"
@@ -25,7 +25,6 @@ export const Layout = () => {
     const [classErrorTitle, setClassErrorTitle] = useState<string>("");
     const [buttonText, setButtonText] = useState<string>("Add");
     const [taskId, setTaskId] = useState<number>(0);
-    const [classCompletedTask, setClassCompletedTask] = useState<string>("");
     const [isSortClicked, setIsSortClicked] = useState<boolean>(false);
 
     useEffect(() => {
@@ -139,8 +138,6 @@ export const Layout = () => {
                 completed: !tasks[selectedTaskIndex].completed
             };
 
-            updatedTask.completed ? setClassCompletedTask("completed") : setClassCompletedTask("");
-
             tasks[selectedTaskIndex] = { ...tasks[selectedTaskIndex], ...updatedTask };
             localStorage.setItem("tasks", JSON.stringify(tasks));
             setTasks(tasks);
@@ -188,14 +185,14 @@ export const Layout = () => {
                             <div className="main_wrapper">
                                 <div className="main_info">
                                     <img src={task.completed ? completedImg : checkImg} alt="" className="main_check" onClick={() => completeTask(task.id)} />
-                                    <span className={`main_text ${classCompletedTask}`}>{task.title}</span>
+                                    <span className={`main_text ${task.completed ? "completed" : ""}`}>{task.title}</span>
                                 </div>
                                 <div className="main_buttons">
                                     <img src={editImg} alt="" className="main_edit" onClick={() => editHandler(task.id)} />
                                     <img src={deleteImgTask} alt="" className="main_delete" onClick={() => deleteTask(task.id)} />
                                 </div>
                             </div>
-                            <p className={`main_description ${classCompletedTask}`}>{task.description}</p>
+                            <p className={`main_description ${task.completed ? "completed" : ""}`}>{task.description}</p>
                         </div>
                     )
                 })}
