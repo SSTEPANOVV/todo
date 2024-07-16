@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { ReactEventHandler, useEffect, useState } from "react";
 
 import checkImg from "../assets/check-circle.svg"
 import editImg from "../assets/edit-3.svg"
@@ -26,6 +26,7 @@ export const Layout = () => {
     const [buttonText, setButtonText] = useState<string>("Add");
     const [taskId, setTaskId] = useState<number>(0);
     const [classCompletedTask, setClassCompletedTask] = useState<string>("");
+    const [isSortClicked, setIsSortClicked] = useState<boolean>(false);
 
     useEffect(() => {
         const storedTasks = localStorage.getItem("tasks");
@@ -137,7 +138,7 @@ export const Layout = () => {
                 description: tasks[selectedTaskIndex].description,
                 completed: !tasks[selectedTaskIndex].completed
             };
-            
+
             updatedTask.completed ? setClassCompletedTask("completed") : setClassCompletedTask("");
 
             tasks[selectedTaskIndex] = { ...tasks[selectedTaskIndex], ...updatedTask };
@@ -145,6 +146,31 @@ export const Layout = () => {
             setTasks(tasks);
         }
     }
+
+    const onSortClicked = () => {
+        setIsSortClicked((prev) => !prev);
+    }
+
+    const sortTask = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+        const target = e.target as HTMLAnchorElement;
+        const sortType: string = target.dataset.sort!;
+        console.log(sortType);
+        
+        switch (sortType) {
+            case "az":
+                tasks.sort((task1, task2) => task1.title.localeCompare(task2.title));
+                break;
+            case "za":
+                tasks.sort((task1, task2) => task2.title.localeCompare(task1.title));
+                break;
+            case "old-new":
+                tasks.sort((task1, task2) => task1.id - task2.id);
+                break;
+        }
+
+        setIsSortClicked(false);
+    }
+
     return (
         <div className="wrapper">
             <header className="header">
@@ -175,10 +201,22 @@ export const Layout = () => {
                 })}
             </main>
             <footer className="footer">
+                {
+                    isSortClicked ?
+                        <div className="footer_dropdown">
+                            <button className="footer_dropbtn">Select Sort Option</button>
+                            <div className="footer_dropdown-content" onClick={sortTask}>
+                                <a href="#" data-sort="az">A - Z</a>
+                                <a href="#" data-sort="za">Z - A</a>
+                                <a href="#" data-sort="old-new">Old - New</a>
+                            </div>
+                        </div>
+                        : ""
+                }
                 <img src={alertImg} alt="" className="footer_button" />
                 <img src={shareImg} alt="" className="footer_button" />
                 <img src={formatImg} alt="" className="footer_button" />
-                <img src={sortImg} alt="" className="footer_button" />
+                <img src={sortImg} alt="" className="footer_button" onClick={onSortClicked} />
                 <img src={deleteImg} alt="" className="footer_button" onClick={deleteAllTasks} />
             </footer>
         </div>
